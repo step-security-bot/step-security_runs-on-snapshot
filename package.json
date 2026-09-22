@@ -1,0 +1,16 @@
+{
+  "name": "runs-on-snapshot",
+  "private": true,
+  "scripts": {
+    "build:template": "node -e \"const fs=require('fs'),t=fs.readFileSync('index.template.js','utf8');fs.writeFileSync('index.js',t.replace('{{ .Args }}',''));fs.writeFileSync('post.js',t.replace('{{ .Args }}','--post'));\"",
+    "build:ncc": "ncc build index.js -o dist && ncc build post.js -o dist-post && cp dist-post/index.js dist/post.js && rm -rf dist-post",
+    "build": "npm run build:template && npm run build:ncc"
+  },
+  "dependencies": {
+    "@actions/core": "^2.0.3",
+    "axios": "^1.20.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.45.0"
+  }
+}
